@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Resilience Planner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-layout">
+            <!-- LEFT: Inputs -->
+            <aside class="inputs-panel" id="inputs-panel">
+                <!-- 1. Live Events Per Year -->
+                <div class="input-group">
+                    <label>Live events per year</label>
+                    <div class="slider-group">
+                        <input
+                            type="range"
+                            id="events-slider"
+                            data-input="events"
+                            min="0"
+                            max="4"
+                            step="1"
+                            value="2"
+                        >
+                        <div class="slider-stops" aria-hidden="true">
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">1</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">5</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">25</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">100</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">500</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Audience Size -->
+                <div class="input-group">
+                    <label>Expected concurrent viewers</label>
+                    <div class="slider-group">
+                        <input
+                            type="range"
+                            id="audience-slider"
+                            data-input="audience"
+                            min="0"
+                            max="4"
+                            step="1"
+                            value="2"
+                        >
+                        <div class="slider-stops" aria-hidden="true">
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">100</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">1K</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">10K</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">100K</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">1M</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Cost of Bad Minute -->
+                <div class="input-group">
+                    <label>Estimated cost of one minute of disruption</label>
+                    <p class="helper-text">Include refunds, lost sales, sponsor exposure, SLA penalties, support load, reputation damage, angry executives, and post-incident cleanup.</p>
+                    <div class="slider-group">
+                        <input
+                            type="range"
+                            id="badminute-slider"
+                            data-input="badminute"
+                            min="0"
+                            max="4"
+                            step="1"
+                            value="2"
+                        >
+                        <div class="slider-stops" aria-hidden="true">
+                            <div class="slider-stop">
+                                <span class="slider-tick"></span>
+                                <span class="slider-stop-label">$10</span>
+                            </div>
+                            <div class="slider-stop">
+                                <span class="slider-tick"></span>
+                                <span class="slider-stop-label">$100</span>
+                            </div>
+                            <div class="slider-stop">
+                                <span class="slider-tick"></span>
+                                <span class="slider-stop-label">$1K</span>
+                            </div>
+                            <div class="slider-stop">
+                                <span class="slider-tick"></span>
+                                <span class="slider-stop-label">$10K</span>
+                            </div>
+                            <div class="slider-stop">
+                                <span class="slider-tick"></span>
+                                <span class="slider-stop-label">$100K</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Stakes -->
+                <div class="input-group">
+                    <label>Business stakes</label>
+                    <div class="slider-group">
+                        <input
+                            type="range"
+                            id="stakes-slider"
+                            data-input="stakes"
+                            min="0"
+                            max="3"
+                            step="1"
+                            value="1"
+                        >
+                        <div class="slider-stops slider-stops-4" aria-hidden="true">
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Low</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Medium</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">High</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Critical</span></div>
+                        </div>
+                    </div>
+                    <p class="helper-text slider-comment" id="stakes-comment">Webinar / marketing / customer-facing</p>
+                </div>                <!-- 5. Outage Tolerance -->
+                <div class="input-group">
+                    <label>Maximum acceptable outage</label>
+                    <div class="slider-group">
+                        <input type="range" id="outage-slider" data-input="outage" min="0" max="3" step="1" value="1">
+                        <div class="slider-stops slider-stops-4" aria-hidden="true">
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">5+ min</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">1-5 min</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">30-60 sec</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Near-zero</span></div>
+                        </div>
+                    </div>
+                    <p class="helper-text slider-comment" id="outage-comment">Hurts</p>
+                </div>                <!-- 6. Environment Risk -->
+                <div class="input-group">
+                    <label>Environment conditions</label>
+                    <div class="slider-group">
+                        <input type="range" id="environment-slider" data-input="environment" min="0" max="3" step="1" value="2">
+                        <div class="slider-stops slider-stops-4" aria-hidden="true">
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Controlled</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Normal</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Hostile</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Chaotic</span></div>
+                        </div>
+                    </div>
+                    <p class="helper-text slider-comment" id="environment-comment">Studio, stable network, repeatable setup</p>
+                </div>                <!-- 7. Cost Appetite -->
+                <div class="input-group">
+                    <label>Budget comfort level</label>
+                    <div class="slider-group">
+                        <input type="range" id="appetite-slider" data-input="appetite" min="0" max="3" step="1" value="1">
+                        <div class="slider-stops slider-stops-4" aria-hidden="true">
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Lean</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Practical</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">Premium</span></div>
+                            <div class="slider-stop"><span class="slider-tick"></span><span class="slider-stop-label">No-compromise</span></div>
+                        </div>
+                    </div>
+                    <p class="helper-text slider-comment" id="appetite-comment">Spend where it reduces failures</p>
+                </div>
+            </aside>
+
+            <!-- RIGHT: Outputs -->
+            <main class="outputs-panel">
+                <div class="header">
+                    <h1>Stream Resilience Planner</h1>
+                    <p class="subtitle">Backup becomes cheaper when expected outage cost exceeds failover cost.</p>
+                </div>
+                <button class="controls-toggle-mobile" id="controls-toggle-mobile" type="button">Show Controls</button>
+
+                <!-- Recommendation Card -->
+                <section class="recommendation-card">
+                    <h2 id="rec-tier">Option Unknown</h2>
+                    <p id="rec-why" class="rec-why"></p>
+                    <div class="rec-tagline" id="rec-tagline"></div>
+                </section>
+
+                <!-- Stacked Cost Chart -->
+                <section class="chart-section">
+                    <h3>Expected annual cost by redundancy option</h3>
+                    <div class="chart-container">
+                        <div class="chart-bars" id="chart-bars"></div>
+                    </div>
+                </section>
+
+                <!-- Recommended Build -->
+                <section class="recommended-build">
+                    <h3>How to build this</h3>
+                    <ul id="build-list"></ul>
+                </section>
+
+                <!-- Option Comparison Cards -->
+                <section class="tier-cards-section">
+                    <h3>Redundancy options</h3>
+                    <div class="tier-cards" id="tier-cards"></div>
+                </section>
+
+                <!-- Assumptions Panel -->
+                <section class="assumptions-section">
+                    <button class="assumptions-toggle" id="assumptions-toggle">
+                        <span class="toggle-text">Show assumptions</span>
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                    <div class="assumptions-panel" id="assumptions-panel" style="display: none;">
+                        <p class="assumptions-disclaimer">This is a decision model, not an insurance model. The goal is to compare tradeoffs, not predict exact losses.</p>
+                        <div class="assumptions-grid" id="assumptions-grid"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
