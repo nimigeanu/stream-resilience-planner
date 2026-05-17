@@ -2,6 +2,8 @@
 
 An interactive widget that estimates how much live-stream redundancy is economically justified.
 
+<img width="1269" height="760" alt="resilience-planner" src="https://github.com/user-attachments/assets/65506191-6b8f-407f-9188-9d68cf49b065" />
+
 Compares five redundancy tiers (from no backup to full active-active) and shows the point where backup becomes cheaper than hoping nothing breaks.
 
 ## Usage
